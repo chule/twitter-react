@@ -1,28 +1,36 @@
 import React, { Component } from 'react';
 import ArcGraph from "./graphs/ArcGraph";
-import Measure from 'react-measure';
+//import Measure from 'react-measure';
 
 class ModalBodyContent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            arcGraphDimensions: -1,
-            data: null
+            arcGraphWidth: null
         }
     }
 
-    componentWillMount() {
+    updateDimensions = () => {
+
+        var arcGraphWidth = this.arcGraph.offsetWidth - 30;
         this.setState({
-            data: this.props.data
+            arcGraphWidth
         })
     }
 
+    componentDidMount = () => {
+        this.updateDimensions();
+        window.addEventListener("resize", this.updateDimensions);
+        //console.log(this.arcGraph.offsetWidth)
+    }
+
     render() {
-        console.log(this.props.data)
 
-        let { data } = this.props.data;
+        let { data } = this.props;
+        let { arcGraphWidth } = this.state;
 
-        //console.log(data.twitter_data.profile_banner_url)
+        console.log(arcGraphWidth)
+
         return (
             <div className="modalBody">
                 <div className="row">
@@ -93,22 +101,19 @@ class ModalBodyContent extends Component {
                     </div>
                     <div className="data-vis col-lg-6">
                         <div className="row">
-                            <div className="bot col-6">
+                            <div className="bot col-6" ref={node => { this.arcGraph = node }}>
                                 <h5>Bot</h5>
 
-                                <Measure
-                                    bounds
-                                    onResize={(contentRect) => {
-                                        this.setState({ arcGraphDimensions: contentRect.bounds })
-                                    }}
-                                >
 
-                                    <ArcGraph />
 
-                                </Measure>
+                                {arcGraphWidth && <ArcGraph width={arcGraphWidth} data={+data.bot_profile.score} />}
+
+
                             </div>
                             <div className="political-propaganda col-6">
                                 <h5>Political propaganda</h5>
+
+                                {arcGraphWidth && <ArcGraph width={arcGraphWidth} data={+data.political_profile.score} />}
 
                             </div>
                             <div className="profile-features col-6">

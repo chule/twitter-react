@@ -6,20 +6,30 @@ class ArcGraph extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: null
+            data: this.props.width
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        let {data, width} = nextProps;
+        this.graphCode(data, width);
+    }
+
     componentDidMount() {
+        let {data, width} = this.props;
+        this.graphCode(data, width);
+    }
 
-        let data = 20;
+    graphCode(data0, width0) {
 
-        var width = 120,
+        // cleanup
+        d3.select(this.svg).select("svg").remove();
+
+        let data = data0 * 100;
+        var width = width0,
             height = width * 2 / 3,
             radius = (height / 2) - (height / 15),
             arcWidth = radius / 4;
-
-        console.log(width)
 
         var tau = 2 * Math.PI;
 
@@ -29,12 +39,14 @@ class ArcGraph extends Component {
             .startAngle(0);
 
         var svg = d3.select(this.svg)
+            .append("svg")
             .attr("width", width)
             .attr("height", height);
 
         var g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-        var background = g.append("path")
+        //var background = 
+        g.append("path")
             .datum({ endAngle: tau })
             .style("fill", "steelblue")
             .attr("d", arc);
@@ -69,7 +81,7 @@ class ArcGraph extends Component {
 
     render() {
         return (
-            <svg ref={node => this.svg = node}></svg>
+            <div ref={node => this.svg = node}></div>
         )
     }
 }

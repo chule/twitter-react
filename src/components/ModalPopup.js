@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import ModalBodyContent from "./ModalBodyContent";
+import dataHandling from "./dataHandling";
 
 class ModalExample extends React.Component {
     constructor(props) {
@@ -13,17 +14,30 @@ class ModalExample extends React.Component {
         this.toggle = this.toggle.bind(this);
     }
 
-    componentDidMount() {
-        this.setState({
-            data: this.props.data
-        });
+    loadData = (twitterHandle) => {
+        const callback = (data) => {
+            this.setState(prevState => {
+
+                return {
+                    ...prevState,
+                    data
+                }
+            });
+        };
+
+        dataHandling(callback, twitterHandle);
     }
+
 
     toggle = () => {
         this.setState({
             modal: !this.state.modal
         });
-        this.props.submit();
+
+        setTimeout(() => {
+            this.loadData(this.props.twitterHandle);
+        }, 1000)
+
     }
 
     render() {
@@ -43,7 +57,15 @@ class ModalExample extends React.Component {
                     <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
 
                     <ModalBody>
-                        {this.props.data && <ModalBodyContent data={this.props.data}/>}
+
+                        {this.state.data
+                            ?
+                            <ModalBodyContent data={this.state.data} />
+                            :
+                            <h2>LOADING</h2>
+                        }
+
+                        {/* {this.props.data && <ModalBodyContent data={this.props.data} />} */}
                     </ModalBody>
 
                     <ModalFooter>
