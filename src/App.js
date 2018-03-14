@@ -20,7 +20,7 @@ class App extends Component {
           data
         }
       });
-    }
+    };
 
     dataHandling(callback, twitterHandle);
   }
@@ -35,7 +35,7 @@ class App extends Component {
   }
 
   render() {
-    const { twitterHandle } = this.state;
+    const { twitterHandle, data } = this.state;
 
     return (
       <div className="container">
@@ -44,7 +44,7 @@ class App extends Component {
           <input ref={node => this.inputRef = node} className="input-handle" placeholder="Please enter a Twitter handle" />
           <div className="text-center button-div">
 
-            <ModalPopup submit={this.onSubmit} twitterHandle={twitterHandle} />
+            <ModalPopup submit={this.onSubmit} twitterHandle={twitterHandle} data={data}/>
 
             {twitterHandle && <p>{twitterHandle}</p>}
           </div>

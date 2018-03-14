@@ -6,10 +6,17 @@ class ModalExample extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false
+            modal: false,
+            data: null
         };
 
         this.toggle = this.toggle.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({
+            data: this.props.data
+        });
     }
 
     toggle = () => {
@@ -20,6 +27,7 @@ class ModalExample extends React.Component {
     }
 
     render() {
+
         return (
             <div>
                 <button
@@ -35,7 +43,7 @@ class ModalExample extends React.Component {
                     <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
 
                     <ModalBody>
-                        <ModalBodyContent />
+                        {this.props.data && <ModalBodyContent data={this.props.data}/>}
                     </ModalBody>
 
                     <ModalFooter>
