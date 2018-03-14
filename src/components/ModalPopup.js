@@ -30,7 +30,7 @@ class ModalExample extends React.Component {
                     CHECK
                 </button>
 
-                <Modal isOpen={this.state.modal} toggle={this.toggle} id="myModal" className="modal-dialog modal-lg">
+                <Modal isOpen={this.state.modal} toggle={this.toggle} id="myModal" className="modal-lg">
 
                     <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
 
@@ -39,7 +39,6 @@ class ModalExample extends React.Component {
                     </ModalBody>
 
                     <ModalFooter>
-
                         <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                     </ModalFooter>
 

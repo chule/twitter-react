@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+
 import ModalPopup from "./components/ModalPopup";
 
 class App extends Component {
@@ -28,11 +28,7 @@ class App extends Component {
           <input ref={node => this.inputRef = node} className="input-handle" placeholder="Please enter a Twitter handle" />
           <div className="text-center button-div">
 
-
-
-              <ModalPopup submit={this.onSubmit} twitterHandle={twitterHandle} />
-
-
+            <ModalPopup submit={this.onSubmit} twitterHandle={twitterHandle} />
 
             {twitterHandle && <p>{twitterHandle}</p>}
           </div>
