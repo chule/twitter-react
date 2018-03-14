@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import dataHandling from "./components/dataHandling";
 import ModalPopup from "./components/ModalPopup";
 
 class App extends Component {
@@ -7,15 +7,31 @@ class App extends Component {
     super()
     this.state = {
       twitterHandle: null,
-      modal: false
+      modal: false,
+      data: null
     }
   }
 
+  loadData = (twitterHandle) => {
+    const callback = (data) => {
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          data
+        }
+      });
+    }
+
+    dataHandling(callback, twitterHandle);
+  }
+
+
   onSubmit = () => {
-    console.log(this.inputRef.value)
+    //console.log(this.inputRef.value);
+    this.loadData(this.inputRef.value);
     this.setState(state => {
       return { twitterHandle: this.inputRef.value };
-    })
+    });
   }
 
   render() {
