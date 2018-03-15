@@ -40,7 +40,7 @@ class ModalBodyContent extends Component {
 
         let { data } = this.props;
         let { arcGraphWidth, bottomBarsWidth } = this.state;
-        console.log("render")
+
         return (
             <div>
                 <div className="modalBody">

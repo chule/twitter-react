@@ -26,8 +26,6 @@ class ArcGraph extends Component {
     }
 
     graphCode(data0, width0) {
-
-        console.log(data0, width0)
         // cleanup
         d3.select(this.svg).select("svg").remove();
 
