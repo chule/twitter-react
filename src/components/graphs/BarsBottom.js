@@ -15,6 +15,7 @@ class ArcGraph extends Component {
         this.graphCode(data, width);
     }
 
+
     shouldComponentUpdate(nextProps) {
         return !_.isEqual(this.props, nextProps);
     }
@@ -26,39 +27,34 @@ class ArcGraph extends Component {
 
     graphCode(data0, width0) {
 
+        
         // cleanup
         d3.select(this.svg).select("svg").remove();
 
-
         var widthSvg = width0,
-            heightSvg = width0 * 2 / 3,
-            margin = { top: 0, right: 20, bottom: 10, left: 0 },
-            height = width0 * 2 / 3 - margin.top - margin.bottom,
+            heightSvg = width0 / 3,
+            margin = { top: 0, right: 30, bottom: 0, left: width0 / 4 },
+            height = (width0 / 3) - margin.top - margin.bottom,
             width = width0 - margin.left - margin.right;
 
         var svg = d3.select(this.svg).append("svg")
             .attr("width", widthSvg)
             .attr("height", heightSvg);
 
+        var data = [];
 
+        data0.forEach(function (d) {
+            data.push({ name: d[0], value: d[1] });
+        })
 
-        var dataArr = [];
-
-        for (let d in data0) {
-            var tempArr = {};
-            tempArr.name = (d[0].toUpperCase() + d.slice(1)).split("_").join(" ");
-            tempArr.value = +data0[d];
-            dataArr.push(tempArr)
-        }
-
-        var data = dataArr.slice(1);
-
-        var yScale = d3.scaleBand().rangeRound([0, height]).padding(0.45)
+        var yScale = d3.scaleBand().rangeRound([0, height]).padding(0.2)
             .domain(data.map(function (d) {
                 return d.name;
             })),
             xScale = d3.scaleLinear().rangeRound([0, width])
-                .domain([0, 1]);
+                .domain([0, d3.max(data, function (d) {
+                    return d.value;
+                })]);
 
         //console.log(data)
 
@@ -93,59 +89,55 @@ class ArcGraph extends Component {
             })
 
 
+
+
+
         labels
             .enter()
             .append("text")
             .attr("class", "label")
 
-            .attr("x", 0)
+            .attr("x", -5)
             .attr("y", function (d, i) {
-                return yScale(d.name) - 2;
+                return yScale(d.name) + yScale.bandwidth() / 2;
             })
+            .attr("text-anchor", function (d, i) {
+                return "end";
+            })
+            .attr("dominant-baseline", "central")
             .text(function (d, i) {
-                return d.name; //  + " " + d.value * 100 + "%"
+                return d.name;
             })
-            .style("font-size", 11)
+            .style("font-size", 13)
+            .style("font-weight", "bold")
+            .style("fill", function (d, i) {
+                return "steelblue";
+            });
 
         labels
             .enter()
             .append("text")
-            .style("opacity", 0)
             .attr("class", "label")
 
             .attr("x", function (d, i) {
-                return d.value < 0.15
-                    ?
-                    xScale(d.value) + 2
-                    :
-                    xScale(d.value) - 4;
+                return xScale(d.value) - 5;
             })
             .attr("y", function (d, i) {
                 return yScale(d.name) + yScale.bandwidth() / 2;
             })
             .attr("text-anchor", function (d, i) {
-                return d.value < 0.15
-                    ?
-                    "start"
-                    :
-                    "end";
+                return "end";
             })
             .attr("dominant-baseline", "central")
             .text(function (d, i) {
-                return d.value * 100 + "%";
+                return d.value;
             })
             .style("font-size", 13)
             .style("font-weight", "bold")
             .style("fill", function (d, i) {
-                return d.value < 0.15
-                    ?
-                    "steelblue"
-                    :
-                    "white";
-            })
-            .transition()
-            .duration(750)
-            .style("opacity", 1);
+                return "white";
+            });
+
 
     }
 

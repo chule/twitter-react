@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import _ from 'lodash';
 import * as d3 from "d3";
 
 class ArcGraph extends Component {
@@ -10,18 +10,24 @@ class ArcGraph extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        let {data, width} = nextProps;
+    componentDidMount() {
+        let { data, width } = this.props;
         this.graphCode(data, width);
     }
 
-    componentDidMount() {
-        let {data, width} = this.props;
+
+    shouldComponentUpdate(nextProps) {
+        return !_.isEqual(this.props, nextProps);
+    }
+
+    componentWillUpdate(nextProps) {
+        let { data, width } = nextProps;
         this.graphCode(data, width);
     }
 
     graphCode(data0, width0) {
 
+        console.log(data0, width0)
         // cleanup
         d3.select(this.svg).select("svg").remove();
 
