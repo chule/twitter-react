@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ArcGraph from "./graphs/ArcGraph";
-//import Measure from 'react-measure';
+import BarsSmall from "./graphs/BarsSmall";
 
 class ModalBodyContent extends Component {
     constructor(props) {
@@ -11,11 +11,15 @@ class ModalBodyContent extends Component {
     }
 
     updateDimensions = () => {
+        if (this.arcGraph.offsetWidth) {
+            var arcGraphWidth = this.arcGraph.offsetWidth - 30;
+            var bottomBarsWidth = (arcGraphWidth * 2) * 30;
+            this.setState({
+                arcGraphWidth,
+                bottomBarsWidth
+            })
+        }
 
-        var arcGraphWidth = this.arcGraph.offsetWidth - 30;
-        this.setState({
-            arcGraphWidth
-        })
     }
 
     componentDidMount = () => {
@@ -119,10 +123,11 @@ class ModalBodyContent extends Component {
                             <div className="profile-features col-6">
                                 <h5>Profile features</h5>
 
+                                {arcGraphWidth && <BarsSmall width={arcGraphWidth} data={data.bot_profile} />}
                             </div>
                             <div className="languge-features col-6">
                                 <h5>Language features</h5>
-
+                                {arcGraphWidth && <BarsSmall width={arcGraphWidth} data={data.political_profile} />}
                             </div>
                             <div className="common-topics-from-tweets col-12">
                                 <h5>Common topics from tweets</h5>
