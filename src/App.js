@@ -26,6 +26,27 @@ class App extends Component {
   // }
 
 
+  componentDidMount() {
+
+
+    var url = 'http://ec2-18-221-137-114.us-east-2.compute.amazonaws.com:80/result';
+    //var data = "[{\"0\":\"realdonaldtrump\"}]";
+    var data = [{ 0: "realdonaldtrump" }];
+
+    fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(data), 
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+    }).then(res => res.json())
+        .catch(error => {
+            console.log("Post error")
+            console.error('Error:', error)
+        })
+        .then(response => console.log('Success:', response));
+
+
+  }
+
   onSubmit = () => {
     //console.log(this.inputRef.value);
     // this.loadData(this.inputRef.value);
