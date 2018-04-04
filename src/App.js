@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import dataHandling from "./components/dataHandling";
 import ModalPopup from "./components/ModalPopup";
+import { request } from "superagent";
 
 class App extends Component {
   constructor() {
@@ -28,21 +29,65 @@ class App extends Component {
 
   componentDidMount() {
 
+    // https://davidwalsh.name/fetch
+
+    // working in postman
+    // url= http://ec2-18-221-137-114.us-east-2.compute.amazonaws.com:80/result
+    // headers= { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+    // body= raw "[{\"0\":\"realdonaldtrump\"}]"
+
+    // "[{\"0\":\"realdonaldtrump\"}]"
+    // {'Content-Type': 'application/json', 'Accept': 'application/json'}
+
+
+    var raw = '[{\"0\":\"realdonaldtrump\"}]'
 
     var url = 'http://ec2-18-221-137-114.us-east-2.compute.amazonaws.com:80/result';
     //var data = "[{\"0\":\"realdonaldtrump\"}]";
     var data = [{ 0: "realdonaldtrump" }];
 
-    fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data), 
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-    }).then(res => res.json())
-        .catch(error => {
-            console.log("Post error")
-            console.error('Error:', error)
-        })
-        .then(response => console.log('Success:', response));
+    // const headers = {
+    //   'Accept': 'application/json',
+    //   'Content-Type': 'application/json'
+    // }
+
+    // console.log(JSON.stringify(raw))
+
+    // fetch(url, {
+    //   method: 'POST',
+    //   body: JSON.stringify(raw),
+    //   headers
+    // }).then(res => res.json())
+    //   .catch(error => {
+    //     console.log("Post error")
+    //     console.error('Error:', error)
+    //   })
+    //   .then(response => console.log('Success:', response));
+
+
+    // var request = new Request(url, {
+    //   method: 'POST',
+    //   body: JSON.stringify(raw),
+    //   headers: new Headers(headers)
+    // });
+
+    // fetch(request)
+    //   .then(res => res.json())
+    //   .then(response => console.log('Success:', response));
+    // .catch(error => {
+    //   console.log("Post error")
+    //   console.error('Error:', error)
+    // })
+    // .then(response => console.log('Success:', response));
+
+    request
+      .post("http://ec2-18-221-137-114.us-east-2.compute.amazonaws.com:80/result")
+      .send([{ 0: "realdonaldtrump" }]) // sends a JSON post body
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        // Calling the end function will send the request
+      });
 
 
   }
